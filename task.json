@@ -1,0 +1,63 @@
+{
+    "_id" : ObjectId("5624ab055be08a18221804e1"),
+    "taskList_name" : "张三植物WGS151019_001",
+    "division_id" : ObjectId("55a352548fb7dc6d09b02e11"),
+    "division" : "应用开发中心",
+    "project_name" : "BGI99",
+    "project_code" : "BGI99",
+    "subproject_name" : "张三植物WGS151019",
+    "pm_name" : "张三",
+    "pm_email" : "dfda@fafd.ff,fkdfjdkja@fa.ff",
+    "experiment_user" : "李旺胜",
+    "experiment_group" : "liwangsheng@genomics.cn,jianglichao@genomics.cn,yjy_wgs@genomics.cn",
+    "cgichina_account" : "fffff",
+    "start_date" : ISODate("2015-10-14T16:00:00.000Z"),
+    "end_date" : ISODate("2015-10-20T16:00:00.000Z"),
+    "task_type_id" : ObjectId("55a352e58fb7dc6d09b02e19"),
+    "task_type" : "只测序",
+    "task_library_type" : "WGS",
+    "species" : "植物",
+    "specificSpecies" : "西瓜",
+    "library_email_group" : "BB-2Ad-大片段 Index建库",
+    "meta" : {
+        "update_user" : "yanqiang",
+        "create_user" : "yanqiang",
+        "create_date" : ISODate("2015-10-19T09:10:36.761Z"),
+        "update_date" : ISODate("2015-10-19T09:14:26.995Z")
+    },
+    "status" : 4,
+    "samples" : [ 
+        {
+            "library_plate_id" : null,
+            "library_plate" : "no library_plate yet",
+            "meta" : {
+                "create_date" : "2015-10-19T08:34:13.897Z",
+                "update_date" : "2015-10-19T08:34:13.897Z"
+            },
+            "__v" : 0,
+            "comment" : "",
+            "sample_concentration" : 0,
+            "sample_volume" : 0,
+            "analysis_type" : "",
+            "lane_count" : 0,
+            "clean_data_size" : 0,
+            "sequencing_anchor" : "141",
+            "sequencing_type" : "",
+            "library_count" : 1,
+            "specificSpecies" : "",
+            "species" : "2",
+            "pooling_order" : false,
+            "pooling_base" : 0,
+            "chip_name" : "",
+            "library_adaptor" : "",
+            "library_type" : "6",
+            "sample_code" : "rtr",
+            "sample_library_name" : "rtrt",
+            "task" : "张三植物WGS151019_001",
+            "task_id" : "5624ab055be08a18221804e1",
+            "column_index" : 1,
+            "_id" : "5624ab055be08a18221804e3"
+        }
+    ],
+    "__v" : 0
+}
