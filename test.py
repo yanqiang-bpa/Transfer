@@ -19,4 +19,15 @@
 
 
 import re
-print(re.match( r'\d{8}', '20150623')).group(0)
+a = '20150623'
+if(re.match( r'\d{8}$', '20150623')):
+	a = a[:4] + '/' + a[4:6] + "/" + a[6:]
+	print a
+if(re.match(r'\d{4}.\d{2}.\d{2}$', '2015.12.23')):
+	a = a.replace(".", "/")
+	print(a)
+if(re.match(r'\d{4}/\d{2}/\d{2}$', '2015/12/23')):
+	a = a.replace(".", "/")
+	print(a)
+
+print	re.match(r'\d{4}/\d{2}/\d{2}$', '2015/12/23')

@@ -4,8 +4,10 @@ import datetime
 import os
 import sys  
 import json
+import re
+from imp import reload
 reload(sys)  
-sys.setdefaultencoding('utf-8')
+# sys.setdefaultencoding('utf-8')
 
 # command = "mongoexport -d sample_track_dev -c tasks -o C:\Users\yanqiang\Desktop\\test.dat"
 # os.system(command)
@@ -52,10 +54,13 @@ sys.setdefaultencoding('utf-8')
 
 __s_date = datetime.date (1899, 12, 31).toordinal() - 1
 def getdate(date):
-    if isinstance(date , float ):
-        date = int(date )
-    d = datetime.date .fromordinal(__s_date + date )
-    return d.strftime("%Y-%m-%d")
+	try:
+	    if isinstance(date , float ):
+	        date = int(date )
+	    d = datetime.date .fromordinal(__s_date + date )
+	    return d.strftime("%Y-%m-%d")
+	except TypeError:
+		return str(date)
 
 data = xlrd.open_workbook(u'BB任务单.xlsx')
 
@@ -163,10 +168,15 @@ for i in range(nrows):
 	
 	taskName = sample[0]
 	projectName = sample[2]
+
+	# 如果这一行是数据行（即不是表头，又不为空行）
 	if((taskName !="" or projectName!="") and not projectName.startswith(u'\u603b\u9879\u76ee\u540d\u79f0')):
 		# print sample
+		print(i)
+
+		# 即和上一个属于同一个task
 		if(taskName == lastTaskName and projectName == lastProjName):
-			# 和上一个属于同一个task
+			# 生成一个新的sample数据
 			sampleDic = {
 	            "library_plate_id" : "",
 	            "library_plate" : "",
@@ -198,27 +208,52 @@ for i in range(nrows):
 	            "column_index" : 1
 	        }
 			taskDic["samples"].append(sampleDic)
+		# 一个新的task
 		else:
 			if(taskDic["taskList_name"] !="" or taskDic["project_name"] != ""):
 				# print taskDic
 				taskJson = json.dumps(taskDic)
-				print taskJson
+				print(taskJson)
+				#Windows
 				f = open("C:\Users\yanqiang\Desktop\out.dat","w")
 				f.write(taskJson)
 				f.close()
 				command = "mongoimport -d sample_track_dev -c tasks C:\Users\yanqiang\Desktop\out.dat"
 				os.system(command)
-			# 一个新的task
+
+				# Linux
+				# f = open("/home/tony/out.dat","w")
+				# f.write(taskJson)
+				# f.close()
+				# command = "mongoimport -d sample_track_dev -c tasks /home/tony/out.dat"
+				# os.system(command)
+			
 
 			if(sample[8] == ""):
 				start_date = ""
 			else:
-				start_date = getdate(sample[8])
+				
+				if(re.match( r'\d{8}.0$', str(sample[8]))):
+					sample[8] = str(sample[8])[:-2]
+					sample[8] = sample[8][:4] + '-' + sample[8][4:6] + "-" + sample[8][6:]
+					start_date = sample[8]
+				if(re.match(r'\d{4}.\d{2}.\d{2}$', str(sample[8]))):
+					start_date = sample[8].replace(".", "-")
+				else:
+					start_date = getdate(sample[8])
 
 			if(sample[9] == ""):
 				end_date = ""
 			else:
-				end_date = getdate(sample[9])
+				
+				if(re.match( r'\d{8}.0$', str(sample[9]))):
+					sample[9] = str(sample[9])[:-2]
+					sample[9] = sample[9][:4] + '-' + sample[9][4:6] + "-" + sample[9][6:]
+					end_date = sample[9]
+				if(re.match(r'\d{4}.\d{2}.\d{2}$', str(sample[9]))):
+					end_date = sample[9].replace(".", "-")
+				else:
+					end_date = getdate(sample[9])
 
 			taskDic = {
 			    "taskList_name" : taskName,
@@ -238,7 +273,8 @@ for i in range(nrows):
 			    "task_library_type" : "",
 			    "species" : sample[18],
 			    "specificSpecies" : "",
-			    "library_email_group" : sample[13],
+			    "library_email_group" : "",
+			    "comment" : sample[27],
 			    "meta" : {
 			        "update_user" : "",
 			        "create_user" : "",
@@ -255,22 +291,22 @@ for i in range(nrows):
 			                "update_date" : ""
 			            },
 			            "__v" : 0,
-			            "comment" : sample[27],
+			            "comment" : sample[25],
 			            "sample_concentration" : sample[24],
 			            "sample_volume" : sample[23],
 			            "analysis_type" : sample[35],
 			            "lane_count" : sample[28],
 			            "clean_data_size" : sample[22],
-			            "sequencing_anchor" : "141",
-			            "sequencing_type" : "",
-			            "library_count" : 1,
+			            "sequencing_anchor" : sample[21],
+			            "sequencing_type" : sample[20],
+			            "library_count" : sample[19],
 			            "specificSpecies" : "",
-			            "species" : "2",
-			            "pooling_order" : "false",
-			            "pooling_base" : 0,
-			            "chip_name" : "",
-			            "library_adaptor" : "",
-			            "library_type" : "6",
+			            "species" : sample[18],
+			            "pooling_order" : sample[17],
+			            "pooling_base" : sample[16],
+			            "chip_name" : sample[15],
+			            "library_adaptor" : sample[14],
+			            "library_type" : sample[13],
 			            "sample_code" : sample[11],
 			            "sample_library_name" : sample[10],
 			            "task" : taskName,
@@ -283,5 +319,22 @@ for i in range(nrows):
 
 		lastTaskName = taskName;
 		lastProjName = projectName;
-	if(i>30):
+	elif(i>7510 and taskDic["taskList_name"] !="" and taskDic["project_name"] != ""):
+		# print taskDic
+		taskJson = json.dumps(taskDic)
+		print(taskJson)
+		#Windows
+		f = open("C:\Users\yanqiang\Desktop\out.dat","w")
+		f.write(taskJson)
+		f.close()
+		command = "mongoimport -d sample_track_dev -c tasks C:\Users\yanqiang\Desktop\out.dat"
+		os.system(command)
+
+		# Linux
+		# f = open("/home/tony/out.dat","w")
+		# f.write(taskJson)
+		# f.close()
+		# command = "mongoimport -d sample_track_dev -c tasks /home/tony/out.dat"
+		# os.system(command)
+
 		break;
