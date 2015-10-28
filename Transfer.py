@@ -99,7 +99,7 @@ taskDic = {
     "status" : "",
     "samples" : [ 
         {
-            "library_plate_id" : "",
+            "library_plate_id" : None,
             "library_plate" : "",
             "meta" : {
                 "create_date" : "",
@@ -124,13 +124,13 @@ taskDic = {
             "sample_code" : "",
             "sample_library_name" : "",
             "task" : "",
-            "task_id" : "",
+            "task_id" : None,
             "column_index" : "",
         }
     ]
 }
 sampleDic = {
-    "library_plate_id" : "",
+    "library_plate_id" : None,
     "library_plate" : "",
     "meta" : {
         "create_date" : "",
@@ -178,7 +178,7 @@ for i in range(nrows):
 		if(taskName == lastTaskName and projectName == lastProjName):
 			# 生成一个新的sample数据
 			sampleDic = {
-	            "library_plate_id" : "",
+	            "library_plate_id" : None,
 	            "library_plate" : "",
 	            "meta" : {
 	                "create_date" : "",
@@ -197,7 +197,7 @@ for i in range(nrows):
 	            "specificSpecies" : "",
 	            "species" : "2",
 	            "pooling_order" : "false",
-	            "pooling_base" : 0,
+	            "pooling_base" : sample[16],
 	            "chip_name" : "",
 	            "library_adaptor" : "",
 	            "library_type" : "6",
