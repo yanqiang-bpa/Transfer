@@ -72,6 +72,7 @@ lastTaskName = ""
 lastProjName = ""
 
 taskDic = {
+	"barcode": "",
     "taskList_name" : "",
     "division" : "",
     "project_name" : "",
@@ -155,7 +156,7 @@ sampleDic = {
     "sample_code" : "",
     "sample_library_name" : "",
     "task" : "",
-    "task_id" : "",
+    "task_id" : None,
     "column_index" : ""
 }
 
@@ -185,22 +186,22 @@ for i in range(nrows):
 	                "update_date" : ""
 	            },
 	            "__v" : 0,
-	            "comment" : sample[27],
+	            "comment" : sample[25],
 	            "sample_concentration" : sample[24],
 	            "sample_volume" : sample[23],
 	            "analysis_type" : sample[35],
 	            "lane_count" : sample[28],
 	            "clean_data_size" : sample[22],
-	            "sequencing_anchor" : "141",
-	            "sequencing_type" : "",
-	            "library_count" : 1,
+	            "sequencing_anchor" : sample[21],
+	            "sequencing_type" : sample[20],
+	            "library_count" : sample[19],
 	            "specificSpecies" : "",
-	            "species" : "2",
-	            "pooling_order" : "false",
+	            "species" : sample[18],
+	            "pooling_order" : sample[17],
 	            "pooling_base" : sample[16],
-	            "chip_name" : "",
-	            "library_adaptor" : "",
-	            "library_type" : "6",
+	            "chip_name" : sample[15],
+	            "library_adaptor" : sample[14],
+	            "library_type" : sample[13],
 	            "sample_code" : sample[11],
 	            "sample_library_name" : sample[10],
 	            "task" : taskName,
@@ -254,9 +255,13 @@ for i in range(nrows):
 					end_date = sample[9].replace(".", "-")
 				else:
 					end_date = getdate(sample[9])
-
+			if(taskName == ""):
+				tempName = "未命名任务单"
+			else:
+				tempName = taskName
 			taskDic = {
-			    "taskList_name" : taskName,
+				"barcode": "",
+			    "taskList_name" : tempName,
 			    "division" : sample[1],
 			    "project_name" : sample[2],
 			    "project_code" : sample[3],
@@ -284,7 +289,7 @@ for i in range(nrows):
 			    "status" : 2,
 			    "samples" : [ 
 			        {
-			            "library_plate_id" : "",
+			            "library_plate_id" : None,
 			            "library_plate" : "",
 			            "meta" : {
 			                "create_date" : "",
