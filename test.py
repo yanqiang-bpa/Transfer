@@ -17,7 +17,7 @@
 
 # print dic
 
-
+# 正则表达式
 import re
 a = '20150623'
 if(re.match( r'\d{8}$', '20150623')):
